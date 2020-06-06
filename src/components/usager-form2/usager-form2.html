@@ -1,0 +1,29 @@
+<form [formGroup]="registerForm">
+      <ion-list>
+        <ion-item>
+          <ion-label stacked>Groupe Sanguin</ion-label>
+          <ion-input type="text" formControlName="groupesanguin"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Maladie</ion-label>
+          <ion-input type="text" formControlName="maladie"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Traitement</ion-label>
+          <ion-input type="text" formControlName="traitement"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Allergie</ion-label>
+          <ion-input type="text" formControlName="allergie"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Contact1</ion-label>
+          <ion-input type="text" formControlName="contact1"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Contact2</ion-label>
+          <ion-input type="text" formControlName="contact2"></ion-input>
+        </ion-item>
+        <button type="submit" ion-button full color="success" (click)="onSubmitForm()" >Terminer</button>
+      </ion-list>
+      </form>

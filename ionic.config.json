@@ -1,0 +1,7 @@
+{
+  "name": "wallou",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}

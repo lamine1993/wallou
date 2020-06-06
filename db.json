@@ -1,0 +1,30 @@
+{
+  "usagers": [
+    {
+      "id": 1,
+      "nom": "sarr",
+      "prenom": "lamine",
+      "naissance": "15/07/1993",
+      "adresse": "fgne",
+      "telephone": "771332492",
+      "groupe_sanguin": "O+",
+      "maladie": "paludisme",
+      "traitement": " AFFAIROU DOCTEUR LEU",
+      "allergie": "sedentarité",
+      "autre_information": "yen a bcp",
+      "contact_1": "772436578",
+      "contact_2": "776549023",
+      "date_ajout": "",
+      "date_modification": "",
+      "user_id": "1"
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "login": "run",
+      "pwd": "1234",
+      "actifYN": 1
+    }
+  ]
+}

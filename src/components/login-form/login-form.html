@@ -1,0 +1,16 @@
+<!-- Generated template for the UsagerFormComponent component -->
+ <!-- Generated template for the RegisterComponent component -->
+ <a><p (click)="reduire()">{{forme}} </p></a>
+<form [formGroup]="loginForm">
+      <ion-list>
+        <ion-item>
+          <ion-label stacked>Telephone</ion-label>
+          <ion-input type="text" formControlName="telephone"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Mode passe</ion-label>
+          <ion-input type="password" formControlName="pwd" ></ion-input>
+        </ion-item>
+        <button type="submit" ion-button full color="success" (click)="onSubmitForm()" >S'inscrire</button>
+      </ion-list>
+      </form>
