@@ -1,4 +1,5 @@
-import { Usager } from './../../providers/model';
+import { Register2Page } from './../register2/register2';
+import { Usager, User } from './../../providers/model';
 import { UsagerServiceProvider } from './../../providers/usager.service';
 import { LoginPage } from './../login/login';
 import { Component, OnInit  } from '@angular/core';
@@ -19,57 +20,52 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   templateUrl: 'register.html',
 })
 export class RegisterPage {
-  public userData: Usager;
-  public pwd: string;
-  public tel:string;
-
-  responseData:any;
-  reduit:boolean=false;
-  forme:string="reduire";
-  action: string="register";
-   registerForm: FormGroup;
-   loginForm:FormGroup;
+private registerForm : FormGroup;
+  usager: Usager;
+  user: User;
   constructor( public formBuilder: FormBuilder,public navCtrl: NavController, public navParams: NavParams, public authService:UsagerServiceProvider) {
+    this.initForm();
   }
 
-   signup(){
-     this.authService.register(this.userData, this.pwd).then((result) => {
-      this.responseData = result;
-      if(this.responseData.userData){
-      console.log(this.responseData);
-      //localStorage.setItem('userData', JSON.stringify(this.responseData));
-      //this.navCtrl.push(TabsPage);
-      }
-      else{ console.log("User already exists"); }
-    }, (err) => {
-      // Error log
-    });
-
-  }
-
-  Check_action( new_act){
-       this.action=new_act
-  }
-
-  reduire(){
-    if (this.reduit==false)
-    {
-      this.reduit=true;
-      this.forme="etendre";
-    }
-    else{
-      this.reduit=false;
-      this.forme="reduire";
-    }
-  }
-
-  login(){
-    //Login page link
-    this.navCtrl.push(LoginPage);
-  }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad RegisterPage');
+    //this.initForm();
+  }
+
+   initForm() {
+        this.registerForm = this.formBuilder.group({
+          nom: ['', Validators.required],
+          prenom: ['', Validators.required],
+          naissance: [''],
+          age: [''],
+          sexe: [''],
+          telephone: ['', Validators.required],
+          groupesanguin: [''],
+          maladie: [''],
+          traitement: [''],
+          allergie: [''],
+          contact1: [''],
+          contact2: [''],
+          login: ['', Validators.required],
+          pwd: ['', Validators.required],
+        });
+  }
+
+  onSubmitForm(){
+        this.usager= {
+            nom:this.registerForm.get('nom').value,
+            prenom: this.registerForm.get('prenom').value,
+            age:this.registerForm.get('age').value,
+            telephone:this.registerForm.get('telephone').value     
+        }
+        this.user={
+          lastName:this.registerForm.get('nom').value,
+          firstName: this.registerForm.get('prenom').value,
+          login:this.registerForm.get('login').value,
+          password:this.registerForm.get('pwd').value
+        }
+      this.navCtrl.push(Register2Page, {user: this.user, usager: this.usager })
+     
   }
 
 }

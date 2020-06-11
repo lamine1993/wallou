@@ -1,45 +1,41 @@
 import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Usager, User } from './../../providers/model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 /**
- * Generated class for the UsagerForm2Component component.
+ * Generated class for the Register2Page page.
  *
- * See https://angular.io/api/core/Component for more info on Angular
- * Components.
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
  */
-@Component({
-  selector: 'usager-form2',
-  templateUrl: 'usager-form2.html'
-})
-export class UsagerForm2Component {
 
+@IonicPage()
+@Component({
+  selector: 'page-register2',
+  templateUrl: 'register2.html',
+})
+export class Register2Page {
 private registerForm : FormGroup;
   usager: Usager;
   user: User;
-  constructor(private formBuilder: FormBuilder) {
-  }
 
-  ngOnInit() {
-    //this.mode = this.navParams.get('mode');
+  constructor(private formBuilder: FormBuilder, public navCtrl: NavController, public navParams: NavParams) {
     this.initForm();
   }
 
-  initForm() {
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad Register2Page');
+  }
+
+   initForm() {
 
         this.registerForm = this.formBuilder.group({
-          nom: ['', Validators.required],
-          prenom: ['', Validators.required],
-          naissance: [''],
-          age: [''],
-          telephone: ['', Validators.required],
           groupesanguin: [''],
           maladie: [''],
           traitement: [''],
           allergie: [''],
           contact1: [''],
           contact2: [''],
-          login: ['', Validators.required],
-          pwd: ['', Validators.required],
         });
   }
 

@@ -1,6 +1,8 @@
-import { Usager } from './../../providers/model';
+import { UrgencePage } from './../../pages/urgence/urgence';
+import { Usager, UsagerServiceProvider, Sql } from './../../providers';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
 /**
  * Generated class for the LoginFormComponent component.
  *
@@ -15,7 +17,7 @@ export class LoginFormComponent implements OnInit {
 
   private loginForm : FormGroup;
   pwd: string;
-  constructor(private formBuilder: FormBuilder) {
+  constructor(public platform: Platform, private formBuilder: FormBuilder, public navCtrl: NavController, public navParams: NavParams, public authService:UsagerServiceProvider, public localStockage:Sql) {
   }
 
   ngOnInit() {
@@ -25,28 +27,27 @@ export class LoginFormComponent implements OnInit {
 
 
   initForm() {
-
         this.loginForm = this.formBuilder.group({
-          nom: ['', Validators.required],
-          prenom: ['', Validators.required],
-          naissance: [''],
-          adresse: [''],
-          telephone: ['', Validators.required],
-          groupesanguin: [''],
-          maladie: [''],
-          traitement: [''],
-          allergie: [''],
-          contact1: [''],
-          contact2: [''],
+          login: ['', Validators.required],
           pwd: ['', Validators.required],
         });
   }
 
   onSubmitForm(){
         let  user ={
-            telephone:this.loginForm.get('telephone').value,
+            login:this.loginForm.get('login').value,
             pwd:this.loginForm.get('pwd').value  
         }
-     
+        this.authService.login(user.login, user.pwd/*'admin','adminw@llou2020'*/).subscribe(data=>{
+            if(data){
+
+              sessionStorage.setItem("currentUser", JSON.stringify(data));
+              if(this.platform.is('android')){
+                this.localStockage.setJson('currentUser', data ).then(()=>{
+                   this.navCtrl.setRoot(UrgencePage)
+                })
+              }else this.navCtrl.setRoot(UrgencePage)
+            }
+        })
   }
 }

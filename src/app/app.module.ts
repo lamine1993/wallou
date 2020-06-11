@@ -1,3 +1,4 @@
+import { Register2Page } from './../pages/register2/register2';
 import { UrgencePage } from './../pages/urgence/urgence';
 import { ComponentsModule } from './../components/components.module';
 import { LoginPage } from './../pages/login/login';
@@ -20,7 +21,8 @@ import { UsagerServiceProvider, TestService, DatabaseService, Sql, LocalisationS
     HomePage,
     RegisterPage,
     LoginPage,
-    UrgencePage
+    UrgencePage,
+    Register2Page
   ],
   imports: [
     BrowserModule,
@@ -35,7 +37,8 @@ import { UsagerServiceProvider, TestService, DatabaseService, Sql, LocalisationS
     HomePage,
     RegisterPage,
     LoginPage,
-    UrgencePage
+    UrgencePage,
+    Register2Page
   ],
   providers: [
     StatusBar,

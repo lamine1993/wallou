@@ -13,6 +13,7 @@ import moment from 'moment';
 import {map} from 'rxjs/operators';
 import 'rxjs';
 import {REGISTER_URL, LOGIN_URL, BASE_URL} from './constantes'
+import { Sql } from './sql';
 /*
   Generated class for the UsagerServiceProvider provider.
 
@@ -25,7 +26,7 @@ export class UsagerServiceProvider {
    token: string;
    access:boolean;
    public usager: Usager;
-   constructor(private jsonp : Http) {
+   constructor(private jsonp : Http, public localStockage:Sql) {
    }
 
 public register(user: Usager, pwd: string ) {
@@ -92,7 +93,7 @@ public getLogin(login, pwd, emitter: EventEmitter<any>) {
         .subscribe( data => {
           if (data) {
             //console.log("resultat connexion ")
-            //console.log(JSON.stringify(data))
+            console.log(JSON.stringify(data))
            // this.token = 'Bearer ' + data.id_token;
            // this.access = true;
            emitter.emit(data)
@@ -103,5 +104,4 @@ public getLogin(login, pwd, emitter: EventEmitter<any>) {
         });
     }
   }
-
 }

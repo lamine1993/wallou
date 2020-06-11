@@ -1,3 +1,4 @@
+import { Sql } from './../providers/sql';
 import { UrgencePage } from './../pages/urgence/urgence';
 import { RegisterPage } from './../pages/register/register';
 import { TestService } from './../providers/testservice';
@@ -13,12 +14,11 @@ import { HomePage } from '../pages/home/home';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  //rootPage: any = RegisterPage;
-  rootPage: any = UrgencePage;
-
+  rootPage: any ;
+ // rootPage: any = UrgencePage;
+  currentUser: any=null;
   pages: Array<{title: string, component: any}>;
-
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public ts: TestService) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public ts: TestService, public localStockage:Sql) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
@@ -34,6 +34,20 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      if(this.platform.is('android')){
+          this.localStockage.getJson('currentUser')
+          .then((data)=>{
+            this.currentUser=data;
+            this.rootPage =UrgencePage ;
+          }).catch(()=>{
+            this.rootPage = HomePage;
+          })
+      }else 
+      {
+        this.currentUser=sessionStorage.getItem('currentUser')
+        this.rootPage = this.currentUser? UrgencePage : HomePage;
+      }
+
     });
   }
 
@@ -42,4 +56,17 @@ export class MyApp {
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
   }
+
+logout(){
+ if(this.platform.is('android')){
+          this.localStockage.remove('currentUser').then(()=>{
+            this.nav.setRoot(HomePage);
+          })
+      }else 
+      {
+        sessionStorage.removeItem("currentUser");
+        this.nav.setRoot(HomePage);
+      }
+}
+
 }

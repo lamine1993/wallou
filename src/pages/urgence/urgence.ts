@@ -22,19 +22,13 @@ export class UrgencePage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad UrgencePage');
   }
-
   
   getLocation(){
-
-
-//isGpsLocationEnabled
-
-       let self=this;
-        
+         let self=this;   
         self.geolocation.getCurrentPosition({timeout: 20000 }).then((resp) => {
-           console.log(resp.coords.latitude)
-           console.log(resp.coords.longitude)
-           this.toast.show('latitude: '+resp.coords.latitude+' longitude: '+resp.coords.longitude, '5000', 'center').subscribe(
+            console.log(resp.coords.latitude)
+            console.log(resp.coords.longitude)
+            this.toast.show('latitude: '+resp.coords.latitude+' longitude: '+resp.coords.longitude, '5000', 'center').subscribe(
               toast => {
                 console.log(toast);
               }
@@ -42,12 +36,6 @@ export class UrgencePage {
         }).catch((error) => {
           console.log('Error getting location',JSON.stringify(error));
         });
-
-       /* let watch = this.geolocation.watchPosition();
-        watch.subscribe((data) => {
-          console.log(data.coords.latitude)
-           console.log(data.coords.longitude)
-        });*/
   }
 
 }

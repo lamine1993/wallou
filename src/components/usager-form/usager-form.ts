@@ -16,7 +16,6 @@ export class UsagerFormComponent implements OnInit {
 
   private registerForm : FormGroup;
   usager: Usager;
-  pwd: string;
   user: User;
   constructor(private formBuilder: FormBuilder) {
   }
@@ -33,6 +32,7 @@ export class UsagerFormComponent implements OnInit {
           prenom: ['', Validators.required],
           naissance: [''],
           age: [''],
+          sexe: [''],
           telephone: ['', Validators.required],
           groupesanguin: [''],
           maladie: [''],
