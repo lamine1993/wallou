@@ -23,13 +23,14 @@ export class RegisterPage {
 private registerForm : FormGroup;
   usager: Usager;
   user: User;
-  constructor( public formBuilder: FormBuilder,public navCtrl: NavController, public navParams: NavParams, public authService:UsagerServiceProvider) {
+  constructor( public formBuilder: FormBuilder,public navCtrl: NavController, public navParams: NavParams) {
     this.initForm();
   }
 
 
   ionViewDidLoad() {
     //this.initForm();
+    
   }
 
    initForm() {
@@ -40,12 +41,7 @@ private registerForm : FormGroup;
           age: [''],
           sexe: [''],
           telephone: ['', Validators.required],
-          groupesanguin: [''],
-          maladie: [''],
-          traitement: [''],
-          allergie: [''],
-          contact1: [''],
-          contact2: [''],
+          email: ['', Validators.email],
           login: ['', Validators.required],
           pwd: ['', Validators.required],
         });
@@ -56,11 +52,12 @@ private registerForm : FormGroup;
             nom:this.registerForm.get('nom').value,
             prenom: this.registerForm.get('prenom').value,
             age:this.registerForm.get('age').value,
-            telephone:this.registerForm.get('telephone').value     
+            telephone:this.registerForm.get('telephone').value,    
         }
         this.user={
           lastName:this.registerForm.get('nom').value,
           firstName: this.registerForm.get('prenom').value,
+          email:this.registerForm.get('email').value ,
           login:this.registerForm.get('login').value,
           password:this.registerForm.get('pwd').value
         }

@@ -26,12 +26,24 @@ export interface Usager{
 }
 
 export interface User{
+	    id?:number,
 	    firstName?: string,
     	lastName?: string, 
 		imageUrl?: string,
 		email?: string,
 		login: string,
 		password: string
+}
+export interface Alerte{
+	dateEnvoieAlerte?: string,
+	dateIntervention?: string,
+	id?: number,
+	interventionYN?: false,
+	localisation?: string,
+	rejetYN?: boolean,
+	resumeIntervention?: string,
+	uniteSecoursId?: number,
+	usagerId?: number
 }
 
  //prenom TEXT, identifiant TEXT, motDePasse TEXT, naissance TEXT, telephone TEXT, groupe_sanguin TEXT, maladie TEXT, traitement TEXT, allergie TEXT, autre_information TEXT, contact_1 TEXT, contact_2 TEXT,

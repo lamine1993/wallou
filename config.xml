@@ -3,7 +3,7 @@
     <name>MyApp</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework.com" href="http://ionicframework.com/">Ionic Framework Team</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://192.168.43.152:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -106,5 +106,6 @@
         <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="To locate you" />
     </plugin>
     <plugin name="cordova-plugin-x-toast" spec="2.7.2" />
+    <allow-navigation href="http://192.168.43.152:8100" sessionid="185478d1" />
     <engine name="android" spec="7.1.4" />
 </widget>

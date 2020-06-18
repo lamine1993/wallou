@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, MenuController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Toast } from '@ionic-native/toast';
 /**
@@ -16,7 +16,8 @@ import { Toast } from '@ionic-native/toast';
 })
 export class UrgencePage {
   
-  constructor(public navCtrl: NavController,private toast: Toast, public navParams: NavParams, public geolocation: Geolocation) {
+  constructor(public menuCtrl: MenuController, public navCtrl: NavController,private toast: Toast, public navParams: NavParams, public geolocation: Geolocation) {
+     //this.menuCtrl.enable(true, 'myMenu');
   }
 
   ionViewDidLoad() {

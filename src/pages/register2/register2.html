@@ -15,7 +15,9 @@
       <ion-list>
         <ion-item>
           <ion-label stacked>Groupe Sanguin</ion-label>
-          <ion-input type="text" formControlName="groupesanguin"></ion-input>
+          <ion-select type="text" formControlName="groupesanguin">
+            <ion-option *ngFor="let group of groupSanguin" value="{{group.id}}">{{group.libelleGroupeSanguin}}</ion-option>
+          </ion-select>
         </ion-item>
         <ion-item>
           <ion-label stacked>Maladie</ion-label>
@@ -31,11 +33,11 @@
         </ion-item>
         <ion-item>
           <ion-label stacked>Contact1</ion-label>
-          <ion-input type="text" formControlName="contact1"></ion-input>
+          <ion-input type="tel" formControlName="contact1"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label stacked>Contact2</ion-label>
-          <ion-input type="text" formControlName="contact2"></ion-input>
+          <ion-input type="tel" formControlName="contact2"></ion-input>
         </ion-item>
         <button type="submit" ion-button full color="success" [disabled]="!registerForm.valid" (click)="onSubmitForm()" >Terminer</button>
       </ion-list>

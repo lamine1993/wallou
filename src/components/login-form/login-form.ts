@@ -2,7 +2,7 @@ import { UrgencePage } from './../../pages/urgence/urgence';
 import { Usager, UsagerServiceProvider, Sql } from './../../providers';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform, Events} from 'ionic-angular';
 /**
  * Generated class for the LoginFormComponent component.
  *
@@ -17,7 +17,13 @@ export class LoginFormComponent implements OnInit {
 
   private loginForm : FormGroup;
   pwd: string;
-  constructor(public platform: Platform, private formBuilder: FormBuilder, public navCtrl: NavController, public navParams: NavParams, public authService:UsagerServiceProvider, public localStockage:Sql) {
+  constructor(public platform: Platform, 
+             private formBuilder: FormBuilder,
+             public navCtrl: NavController, 
+             public navParams:NavParams, 
+             public authService:UsagerServiceProvider, 
+             public localStockage:Sql,
+             public events: Events) {
   }
 
   ngOnInit() {
@@ -38,15 +44,11 @@ export class LoginFormComponent implements OnInit {
             login:this.loginForm.get('login').value,
             pwd:this.loginForm.get('pwd').value  
         }
-        this.authService.login(user.login, user.pwd/*'admin','adminw@llou2020'*/).subscribe(data=>{
+        this.authService.login(user.login, user.pwd).subscribe(data=>{
             if(data){
-
-              sessionStorage.setItem("currentUser", JSON.stringify(data));
-              if(this.platform.is('android')){
-                this.localStockage.setJson('currentUser', data ).then(()=>{
-                   this.navCtrl.setRoot(UrgencePage)
-                })
-              }else this.navCtrl.setRoot(UrgencePage)
+               console.log("connection reussi: : "+ data)
+               this.events.publish('user:logged')
+               this.navCtrl.setRoot(UrgencePage)
             }
         })
   }

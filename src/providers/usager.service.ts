@@ -1,22 +1,21 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import {MapToDataType} from './modelFromJson'
 import { DatabaseService } from './database.service';
 import { Jsonp, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import {Platform } from 'ionic-angular';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
-import { Usager, User } from './model';
-import {Http, Headers} from '@angular/http';
+import { Usager, User, Alerte } from './model';
+import {Http, Headers, RequestOptions} from '@angular/http';
 import {UtilService} from './util.service';
 import moment from 'moment';
 import {map} from 'rxjs/operators';
 import 'rxjs';
-import {REGISTER_URL, LOGIN_URL, BASE_URL} from './constantes'
+import {BASE_URL} from './constantes'
 import { Sql } from './sql';
 /*
   Generated class for the UsagerServiceProvider provider.
-
   See https://angular.io/guide/dependency-injection for more info on providers
   and Angular DI.
 */
@@ -26,21 +25,8 @@ export class UsagerServiceProvider {
    token: string;
    access:boolean;
    public usager: Usager;
-   constructor(private jsonp : Http, public localStockage:Sql) {
+   constructor(public platform: Platform, private jsonp : Http, public localStockage:Sql, public localBase:DatabaseService) {
    }
-
-public register(user: Usager, pwd: string ) {
-    return new Promise((resolve, reject) => {
-      let headers = new Headers();
-      console.log(JSON.stringify(user))
-      this.jsonp.post(BASE_URL+ 'register', user, {headers: headers})
-        .subscribe(res => {
-          resolve(res.json());
-        }, (err) => {
-          reject(err);
-        });
-    });
-  }
 
 public login(login, pwd):Observable<any>{
   let self = this;
@@ -56,23 +42,31 @@ public addUser(user: User):Observable<any>{
   return emitter;
 }
 
-public addUserToServer(user: User, emitter:EventEmitter<any>){
+public addUsager(user: Usager):Observable<any>{
+  let self=this;
+  let emitter: EventEmitter<any>= new EventEmitter<any>();
+  self.addUsagerToServer(user, emitter);
+  return emitter;
+}
+
+public addUsagerToServer(user: Usager, emitter:EventEmitter<any>){
   let data={
-    activated: true,
-    //authorities: ["ROLE_USER"],
-    createdBy: user.firstName ,
-    createdDate: ''+moment.HTML5_FMT.DATETIME_LOCAL_SECONDS,
-    email: "sarr@fdq.dc",
-    firstName: user.firstName,
-    //"imageUrl": "string",
-    //"langKey": "string",
-    //lastModifiedBy: moment.HTML5_FMT.DATETIME_LOCAL_SECONDS,
-    //lastModifiedDate:moment.HTML5_FMT.DATETIME_LOCAL_SECONDS,
-    lastName: user.lastName,
-    login: user.login,
-    password: user.password
+    adresse: "",
+    age: user.age,
+    allergie: user.allergie,
+    contact1: user.contact_1,
+    contact2: user.contact_2,
+    dateAjout: moment().format("YYYY-MM-DD"),
+    dateModification: moment().format("YYYY-MM-DD"),
+    groupeSanguinId: user.groupe_sanguin,
+    maladie: user.maladie,
+    nom: user.nom,
+    prenom: user.prenom,
+    telephone: user.telephone,
+    traitement: user.traitement,
+    userId: user.user_id
   }
-  return this.jsonp.post(BASE_URL+ 'register', {firstName: user.firstName, lastName: user.lastName,createdDate:moment.HTML5_FMT.DATETIME_LOCAL_SECONDS, email: user.email, login:user.login, password: user.password} )
+  return this.jsonp.post(BASE_URL+ 'usagers', data )
         .map(res => res.json())
         .subscribe( data => {
            emitter.emit(data)
@@ -82,13 +76,84 @@ public addUserToServer(user: User, emitter:EventEmitter<any>){
         });
 }
 
+public addUserToServer(user: User, emitter:EventEmitter<any>){
+  let data={
+    activated: true,
+    authorities: ["ROLE_USER"],
+    email: user.email,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    login: user.login,
+    password: user.password
+  }
+  return this.jsonp.post(BASE_URL+ 'register', data )
+        .map(res => res.json())
+        .subscribe( data => {
+           emitter.emit(data)
+        }, error=>{
+          emitter.emit(null)
+          console.log("error.. "+ JSON.stringify(error))
+        });
+}
 
 public getLogin(login, pwd, emitter: EventEmitter<any>) {
     if (login === null || pwd === null) {
       return Observable.throw("Please insert credentials.");
     } else {
-
        return this.jsonp.post(BASE_URL+ 'authenticate', {username: login, password: pwd})
+        .map(res => res.json())
+        .subscribe( data => {
+          if (data) {
+            let token=data.id_token;
+            let headers = new Headers();
+            headers.append('Content-Type', 'application/x-www-form-urlencoded');
+            headers.append('Accept', 'application/json');
+            headers.append('Authorization', 'Bearer '+data.id_token);
+            let options = new RequestOptions({ headers: headers });
+            this.jsonp.get("http://vps-8d31b175.vps.ovh.net:8080/wallou/api/users/"+login, options )
+            .subscribe((data_bis)=>{
+               let user: User;
+               let d=JSON.parse(data_bis['_body'])
+               user={
+                 id: d.id,
+                 firstName:d.firstName,
+                 lastName:d.lastName,
+                 login:d.login,
+                 password:d.password
+               }
+               console.log(user)
+               this.localBase.addUser(user).then((resp)=>{
+                  if(this.platform.is('android')){
+                    this.localStockage.setJson("token", token).then(rsp=> emitter.emit(d))
+                  // })
+                  }else{
+                    sessionStorage.setItem("token", token );
+                    emitter.emit(d)
+                  }
+               })
+            })
+          } else {
+            emitter.emit(null)
+          }
+        }, error=>{
+          console.log("login et mot de passe erronés \n"+ JSON.stringify(error))
+          emitter.emit(null)
+        });
+    }
+  }
+
+addAlerte(alerte: Alerte,  emitter: EventEmitter<any>){
+  let data={
+	dateEnvoieAlerte: moment().format("YYYY-MM-DD"),
+	dateIntervention: null,
+	interventionYN: false,
+	localisation: alerte.localisation,
+	rejetYN: false,
+	resumeIntervention: "",
+	uniteSecoursId: 1,
+	usagerId: alerte.usagerId
+  }
+ return this.jsonp.post(BASE_URL+ 'usager',data)
         .map(res => res.json())
         .subscribe( data => {
           if (data) {
@@ -101,7 +166,25 @@ public getLogin(login, pwd, emitter: EventEmitter<any>) {
             //this.access = false;
             emitter.emit(null)
           }
+        }, error=>{
+          console.log("login et mot de passe erronés \n"+ JSON.stringify(error))
         });
-    }
-  }
+}
+
+public groupeSanguins():Observable<any>{
+  let self=this;
+  let emitter: EventEmitter<any>= new EventEmitter<any>();
+  self.getGroupeSanguin(emitter);
+  return emitter;
+}
+
+getGroupeSanguin(emitter: EventEmitter<any>){
+  return this.jsonp.get(BASE_URL+"groupe-sanguins")
+  .map(res => res.json())
+  .subscribe(data=>{
+    console.log();
+    emitter.emit(data)
+  })
+}
+
 }

@@ -1,7 +1,11 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Sql } from './../../providers/sql';
+import { UrgencePage } from './../urgence/urgence';
+import { Component, OnInit } from '@angular/core';
+import { IonicPage, NavController, NavParams, Platform, Events } from 'ionic-angular';
 import { Usager, User } from './../../providers/model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UsagerServiceProvider } from '../../providers';
+import { NgZone } from '@angular/core';
 /**
  * Generated class for the Register2Page page.
  *
@@ -14,21 +18,50 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   selector: 'page-register2',
   templateUrl: 'register2.html',
 })
-export class Register2Page {
+export class Register2Page implements OnInit {
 private registerForm : FormGroup;
   usager: Usager;
   user: User;
+  groupSanguin: Array<{id:number, libelleGroupeSanguin: string}>=[]
+  
 
-  constructor(private formBuilder: FormBuilder, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(private zone: NgZone, 
+             public platform: Platform,  
+             public localStockage:Sql, 
+             private formBuilder: FormBuilder, 
+             public navCtrl: NavController, 
+             public navParams: NavParams,  
+             public authService:UsagerServiceProvider,
+             public events:Events) {
+
+   
     this.initForm();
+    this.user=this.navParams.get("user");
+    this.usager=this.navParams.get("usager");
+    console.log("user "+ JSON.stringify(this.user));
+    console.log("usager "+JSON.stringify(this.usager));
   }
 
+
+  ngOnInit(){
+     console.log('ngOnInit Register2Page');
+    this.authService.groupeSanguins().subscribe(data=>{
+       this.groupSanguin=data
+       this.refresh();
+    })
+  }
+
+refresh() {
+  this.zone.run(() => {
+    console.log('force update the screen');
+  });
+}
+
   ionViewDidLoad() {
-    console.log('ionViewDidLoad Register2Page');
   }
 
    initForm() {
-
+        
         this.registerForm = this.formBuilder.group({
           groupesanguin: [''],
           maladie: [''],
@@ -40,16 +73,34 @@ private registerForm : FormGroup;
   }
 
   onSubmitForm(){
+        this.usager.groupe_sanguin=this.registerForm.get('groupesanguin').value;
+        this.usager.maladie=this.registerForm.get('maladie').value,
+        this.usager.traitement=this.registerForm.get('traitement').value,
+        this.usager.allergie=this.registerForm.get('allergie').value, 
+        this.usager.contact_1=this.registerForm.get('contact1').value,
+        this.usager.contact_2=this.registerForm.get('contact2').value,
         
-        this.usager= {
-           //adresse:this.registerForm.get('adresse').value,
-            groupe_sanguin:this.registerForm.get('groupesanguin').value,
-            maladie: this.registerForm.get('maladie').value,
-            traitement:this.registerForm.get('traitement').value,
-            allergie:this.registerForm.get('allergie').value, 
-            contact_1:this.registerForm.get('contact1').value,
-            contact_2:this.registerForm.get('contact2').value,     
-        }
+        console.log("groupe sanguin value "+this.usager.groupe_sanguin)
+        this.authService.addUser(this.user).subscribe((data)=>{
+            if(data){
+              this.user.id=data['id'];
+              this.usager.user_id=this.user.id;
+              //console.log("id user: "+this.user.id);
+              this.authService.addUsager(this.usager).subscribe((data)=>{
+                 this.authService.login(this.user.login, this.user.password).subscribe((data)=>{
+                    if(data){
+                      console.log("connection reussi: "+ JSON.stringify(data))
+                      this.events.publish('user:logged')
+                      this.navCtrl.setRoot(UrgencePage)
+                    }
+                 })
+              },(error)=>{
+                  console.log("error when registring usager :"+ JSON.stringify(error))
+              })
+            }
+        },(error)=>{
+                  console.log("error when registring user :"+ JSON.stringify(error))
+        })
      
   }
 

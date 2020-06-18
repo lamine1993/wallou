@@ -29,22 +29,27 @@
         </ion-item>
         <ion-item>
           <ion-label stacked>Age</ion-label>
-          <ion-input type="text" formControlName="age"></ion-input>
+          <ion-input type="number" formControlName="age"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label stacked>Telephone</ion-label>
-          <ion-input type="text" formControlName="telephone"></ion-input>
+          <ion-input type="tel" formControlName="telephone"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-label stacked>Login</ion-label>
+          <ion-label stacked>Email</ion-label>
+          <ion-input type="email" formControlName="email"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Username</ion-label>
           <ion-input type="text" formControlName="login" ></ion-input>
         </ion-item>
         <ion-item>
           <ion-label stacked>Mot de passe</ion-label>
           <ion-input type="password" formControlName="pwd" ></ion-input>
         </ion-item>
-        <button type="submit" [disabled]="!registerForm.valid" ion-button full color="success" (click)="onSubmitForm()" >Suivant</button>
+        <button type="submit" ion-button full color="success" (click)="onSubmitForm()" >Suivant</button>
       </ion-list>
     </form>
   </ion-card-content>
+  <!-- [disabled]="!registerForm.valid" -->
 </ion-content>

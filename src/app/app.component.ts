@@ -1,9 +1,12 @@
+import { LoggoutPage } from './../pages/loggout/loggout';
+import { LoginPage } from './../pages/login/login';
 import { Sql } from './../providers/sql';
+import { DatabaseService } from './../providers';
 import { UrgencePage } from './../pages/urgence/urgence';
 import { RegisterPage } from './../pages/register/register';
 import { TestService } from './../providers/testservice';
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { HomePage } from '../pages/home/home';
@@ -18,13 +21,37 @@ export class MyApp {
  // rootPage: any = UrgencePage;
   currentUser: any=null;
   pages: Array<{title: string, component: any}>;
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public ts: TestService, public localStockage:Sql) {
+  constructor(public events: Events ,
+              public platform: Platform, 
+              public statusBar: StatusBar, 
+              public splashScreen: SplashScreen, 
+              public ts: TestService, 
+              public localStockage:Sql, 
+              public db :DatabaseService) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Home', component: UrgencePage },
+      { title: 'Acceuil', component: HomePage},
+      {title: 'Connexion', component: LoginPage},
+      {title: 'Inscription', component: RegisterPage}
     ];
+
+    events.subscribe('user:logged', ()=>{
+      this.pages=[
+        { title: 'Urgence', component: UrgencePage},
+        {title: 'Deconnexion', component: LoggoutPage},
+      ]
+    });
+
+    events.subscribe('user:loggedout', ()=>{
+      this.pages = [
+        { title: 'Acceuil', component: HomePage},
+        {title: 'Connexion', component: LoginPage},
+        {title: 'Inscription', component: RegisterPage}
+      ];
+    });
+
 
   }
 
@@ -35,17 +62,25 @@ export class MyApp {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       if(this.platform.is('android')){
-          this.localStockage.getJson('currentUser')
+          this.localStockage.getJson('token')
           .then((data)=>{
             this.currentUser=data;
+            this.events.publish('user:logged')
             this.rootPage =UrgencePage ;
           }).catch(()=>{
+            this.events.publish('user:loggedout')
             this.rootPage = HomePage;
           })
       }else 
       {
-        this.currentUser=sessionStorage.getItem('currentUser')
-        this.rootPage = this.currentUser? UrgencePage : HomePage;
+        this.currentUser=sessionStorage.getItem('token')
+        if(this.currentUser){
+          this.events.publish('user:logged')
+          this.rootPage =UrgencePage 
+        }else{
+          this.events.publish('user:loggedout')
+          this.rootPage = HomePage;
+        }
       }
 
     });
@@ -56,17 +91,5 @@ export class MyApp {
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
   }
-
-logout(){
- if(this.platform.is('android')){
-          this.localStockage.remove('currentUser').then(()=>{
-            this.nav.setRoot(HomePage);
-          })
-      }else 
-      {
-        sessionStorage.removeItem("currentUser");
-        this.nav.setRoot(HomePage);
-      }
-}
 
 }
