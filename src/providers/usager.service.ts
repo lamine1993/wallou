@@ -110,7 +110,7 @@ public getLogin(login, pwd, emitter: EventEmitter<any>) {
             headers.append('Accept', 'application/json');
             headers.append('Authorization', 'Bearer '+data.id_token);
             let options = new RequestOptions({ headers: headers });
-            this.jsonp.get("http://vps-8d31b175.vps.ovh.net:8080/wallou/api/users/"+login, options )
+            this.jsonp.get(BASE_URL+"users/"+login, options )
             .subscribe((data_bis)=>{
                let user: User;
                let d=JSON.parse(data_bis['_body'])
@@ -124,7 +124,9 @@ public getLogin(login, pwd, emitter: EventEmitter<any>) {
                console.log(user)
                this.localBase.addUser(user).then((resp)=>{
                   if(this.platform.is('android')){
-                    this.localStockage.setJson("token", token).then(rsp=> emitter.emit(d))
+                    this.localStockage.setJson("token", token)
+                    .then(()=>this.localStockage.setJson("idUser", user.id))
+                    .then(rsp=> emitter.emit(d));
                   // })
                   }else{
                     sessionStorage.setItem("token", token );
@@ -142,33 +144,52 @@ public getLogin(login, pwd, emitter: EventEmitter<any>) {
     }
   }
 
-addAlerte(alerte: Alerte,  emitter: EventEmitter<any>){
-  let data={
-	dateEnvoieAlerte: moment().format("YYYY-MM-DD"),
-	dateIntervention: null,
-	interventionYN: false,
-	localisation: alerte.localisation,
-	rejetYN: false,
-	resumeIntervention: "",
-	uniteSecoursId: 1,
-	usagerId: alerte.usagerId
-  }
- return this.jsonp.post(BASE_URL+ 'usager',data)
-        .map(res => res.json())
-        .subscribe( data => {
-          if (data) {
-            //console.log("resultat connexion ")
-            console.log(JSON.stringify(data))
-           // this.token = 'Bearer ' + data.id_token;
-           // this.access = true;
-           emitter.emit(data)
-          } else {
-            //this.access = false;
-            emitter.emit(null)
-          }
-        }, error=>{
-          console.log("login et mot de passe erronés \n"+ JSON.stringify(error))
-        });
+alerter(lat:number, lng: number){
+    let self=this;
+    let emitter: EventEmitter<any>= new EventEmitter<any>();
+    self.addAlerteToServer(lat, lng, emitter);
+    return emitter;
+}
+
+addAlerteToServer(lat:number, lng: number,  emitter: EventEmitter<any>){
+
+return this.localStockage.getJson('token').then((resp)=>{
+       this.localStockage.getJson('idUser').then((resp2)=>{
+         console.log(resp)
+         console.log(resp2)
+         this.getUsager(resp2, resp).subscribe((response)=>{
+           console.log(moment().format().toString(),)
+           let usager=response
+           let data={
+              dateEnvoieAlerte: moment().format().toString(),
+              dateIntervention: null,
+              interventionYN: false,
+              localisation: ""+lat+ "; "+ lng ,
+              rejetYN: false,
+              resumeIntervention: "", 
+              uniteSecoursId: 1,
+              usagerId: usager.id
+              }
+
+            let headers = new Headers();
+            //headers.append('Accept', 'application/json');
+            headers.append('Authorization', 'Bearer '+ resp);
+            let options = new RequestOptions({ headers: headers });
+           this.jsonp.post(BASE_URL+ 'alertes',data, options )
+            .map(res => res.json())
+            .subscribe( data => {
+              if (data) {
+              emitter.emit(data)
+              } else {
+                emitter.emit(null)
+              }
+            }, error=>{
+              console.log("erreur "+JSON.stringify(error))
+              emitter.emit(null)
+            });
+         })
+       })
+    })
 }
 
 public groupeSanguins():Observable<any>{
@@ -176,6 +197,28 @@ public groupeSanguins():Observable<any>{
   let emitter: EventEmitter<any>= new EventEmitter<any>();
   self.getGroupeSanguin(emitter);
   return emitter;
+}
+
+getUsager(id_user :number, token: string):Observable<any>{
+    let self=this;
+    let emitter: EventEmitter<any>= new EventEmitter<any>();
+
+    self.getUsagerFromServer(id_user, token, emitter)
+    return emitter;
+}
+
+getUsagerFromServer(id_user :number, token: string, emitter: EventEmitter<any>){
+  let headers = new Headers();
+            headers.append('Content-Type', 'application/x-www-form-urlencoded');
+            headers.append('Accept', 'application/json');
+            headers.append('Authorization', 'Bearer '+ token);
+            let options = new RequestOptions({ headers: headers });
+  return this.jsonp.get(BASE_URL+"usagers-user/"+id_user, options )
+  .map(res => res.json())
+  .subscribe(data=>{
+    console.log(data[0]);
+    emitter.emit(data[0])
+  })
 }
 
 getGroupeSanguin(emitter: EventEmitter<any>){

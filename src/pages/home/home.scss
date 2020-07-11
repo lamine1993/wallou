@@ -1,3 +1,26 @@
 page-home {
+   ion-slides{
+       padding: 0px 0px 0px 0px;
+       height: 50%;
+       p{
+           font-size: 12px;
+           text-align: left;
+       };
+       h3{
+           text-align: left;
+       }
+   }
+
+$slides-pagination-bullet-color-active: color($colors, appCouleur);
+
+.swiper-pagination-bullet-active {
+  background: $slides-pagination-bullet-color-active;
+}
+
+ion-img{
+    height: 200px;
+    width: 90%;
+}
+
 
 }
