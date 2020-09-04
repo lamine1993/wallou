@@ -2,6 +2,7 @@ import { RegisterPage } from './../register/register';
 import { LoginPage } from './../login/login';
 import { Component } from '@angular/core';
 import { NavController, MenuController  } from 'ionic-angular';
+import { StatusBar } from '@ionic-native/status-bar';
 
 @Component({
   selector: 'page-home',
@@ -9,16 +10,27 @@ import { NavController, MenuController  } from 'ionic-angular';
 })
 export class HomePage {
 
-  constructor(public navCtrl: NavController, public menuCtrl: MenuController) {
+  constructor(public navCtrl: NavController, public menuCtrl: MenuController, private statusBar: StatusBar) {
      //this.menuCtrl.enable(false, 'myMenu');
+     this.statusBar.overlaysWebView(true);
+     this.statusBar.hide()
   }
 
   gotoRegister(){
-    this.navCtrl.push(RegisterPage);
+    const animationsOptions = {
+      animation: 'ios-transition',
+      duration: 1000
+    }
+    this.navCtrl.push(RegisterPage,  {}, animationsOptions);
   }
 
   gotoLogin(){
-    this.navCtrl.push(LoginPage);
+    const animationsOptions = {
+      animation: 'ios-transition',
+      duration: 1000
+    }
+
+    this.navCtrl.push(LoginPage,  {}, animationsOptions);
   }
 
 }

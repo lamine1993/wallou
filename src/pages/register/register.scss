@@ -1,3 +1,74 @@
 page-register {
+     ion-header {
+        height: 0px;
+        .toolbar {
+            .toolbar-background {
+            background: transparent;
+            }
+        }
+    }
+    .box {
+                margin-top: $picker-wp-toolbar-height;
+                box-sizing: border-box;
+                //border: 1px solid #dadce0;
+                -webkit-border-radius: 8px;
+                border-radius: 8px;
+            
+        }
+    .intro{
+        text-transform: none;
+        font-weight: bold;
+        color: color($colors, appCouleur, base);
+        font-size: 18px;
+        letter-spacing: .1px;
+        line-height: 1.5;
+    }
+    ion-label{
 
+    }
+    ion-input{
+    border-radius: 10px;
+    //border: 1px solid rgb(158, 154, 154) ;
+    //border: none !important;
+    background-color: rgba(192, 192, 192, 0.26);
+    }
+    ion-item{
+        display: block;
+    }
+    ion-icon{
+        margin-right: 5px;
+    }
+    ion-content{
+        background-color: transparent;
+    }
+    .BackgroundAppLogin{
+    background-image: url('../../assets/imgs/Login.png');
+    background-repeat: no-repeat;
+    background-size:cover;
+    }
+    ion-card-content{
+        background-color: transparent !important;
+    }
+
+    ion-col, ion-input{
+         background-color: "#EDA";
+    }
+    ion-row, .row {
+        
+    }
+    .row{
+       width: 100%; 
+    }
+    ion-row ion-item{
+        
+    }
+
+    .item.item-trns {
+	border-color: rgba(0, 0, 0, 0);
+    background-color: rgba(0, 0, 0, 0);
+   }
+
+   ion-item-divider{
+       
+   }
 }

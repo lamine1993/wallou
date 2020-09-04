@@ -1,48 +1,44 @@
 <ion-header>
-  <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>Acceuil</ion-title>
-  </ion-navbar>
-</ion-header>
+  
+</ion-header> 
 
 <ion-content padding>
 
+<div class="imgs">
 <ion-slides>
    <ion-slide>
-     <ion-img src="assets/ambulance_vector.png"></ion-img>
+     <img src="assets/ambulance_vector.png"/>
    </ion-slide>
    <ion-slide>
-     <ion-img src="assets/crash.png" ></ion-img>
+     <img src="assets/crash.png"/>
    </ion-slide>
 </ion-slides>
-
+</div>
+<div class="infos">
 <ion-slides pager>
    <ion-slide>
     <h3>Slide 1</h3>
     <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
-    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
     </p>
   </ion-slide>
   <ion-slide>
     <h3>Slide 2</h3>
     <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
-    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
     </p>
   </ion-slide>
   <ion-slide>
     <h3>Slide 3</h3>
     <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
-    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
     </p>
   </ion-slide>
 
 </ion-slides>
-
-  <button block ion-button full round color="appCouleur" (click)="gotoRegister()">S'inscrire</button>
-  <button  block ion-button outline round color="appCouleur" (click)="gotoLogin()">Se connecter</button>
+</div>
+<div class="btns">
+    <button block ion-button full round color="appCouleur" (click)="gotoRegister()">S'inscrire</button>
+    <button  block ion-button outline round color="appCouleur" (click)="gotoLogin()">Se connecter</button>
+</div>
 </ion-content>

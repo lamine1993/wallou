@@ -1,16 +1,41 @@
 <!-- Generated template for the UsagerFormComponent component -->
  <!-- Generated template for the RegisterComponent component -->
- <a><p (click)="reduire()">{{forme}} </p></a>
+<div class="box">
+  
+  <p><ion-icon id="logo" style="zoom:4.0;" name="ios-bulb"></ion-icon>WALLOU</p>
+
 <form [formGroup]="loginForm">
-      <ion-list>
-        <ion-item>
-          <ion-label stacked>login</ion-label>
-          <ion-input type="text" formControlName="login"></ion-input>
+         <ion-row>
+          <ion-item class="item item-trns"  col-12 no-lines>
+            <ion-label stacked><ion-icon name="person"></ion-icon>Username</ion-label>
+            <ion-input type="text" formControlName="login" ></ion-input>
+          </ion-item>
+          </ion-row>
+          <ion-row>
+          <ion-item class="item item-trns" col-12 no-lines>
+            <ion-label stacked> <ion-icon name="lock"></ion-icon>Mot de passe</ion-label>
+            <ion-input type="password" formControlName="pwd" ></ion-input>
+          </ion-item>
+          </ion-row>
+        <ion-item class="item item-trns" no-lines>
+           <button ion-button round [disabled]="!loginForm.valid" color="appCouleur" type="submit" (click)="onSubmitForm()" >Se connecter</button>
         </ion-item>
-        <ion-item>
-          <ion-label stacked>Mode passe</ion-label>
-          <ion-input type="password" formControlName="pwd" ></ion-input>
-        </ion-item>
-        <button type="submit" ion-button full color="success" (click)="onSubmitForm()" >S'inscrire</button>
-      </ion-list>
       </form>
+  </div>
+<!-- <div class="box">
+  <ion-icon id="logo" style="zoom:4.0;" name="ios-bulb"></ion-icon>
+  <p>WALLOU</p>
+  <form [formGroup]="loginForm">
+         <div class="inputBox">
+            <ion-label stacked><ion-icon name="person"></ion-icon>Username</ion-label>
+            <ion-input type="text" formControlName="login" ></ion-input>
+          </div>
+          <div class="inputBox">
+            <ion-label stacked> <ion-icon name="lock"></ion-icon>Mot de passe</ion-label>
+            <ion-input type="password" formControlName="pwd" ></ion-input>
+          </div>
+          <input type="submit" name="sign-in" value="Sign In">
+    </form>
+</div>
+
+-->

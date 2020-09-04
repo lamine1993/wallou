@@ -1,3 +1,74 @@
 login-form {
 
+    form{
+        height: 80hv;
+        width: 100%;
+    }
+    img{
+        
+    }
+    ion-label{
+
+    }
+    ion-icon{
+        margin-right: 5px;
+    }
+    .item.item-trns {
+	border-color: rgba(0, 0, 0, 0);
+    background-color: rgba(0, 0, 0, 0);
+   }
+    ion-input{
+    border-radius: 10px;
+    //border: 1px solid rgb(158, 154, 154) ;
+    //border: none !important;
+    background-color: rgba(192, 192, 192, 0.26);
+    }
+    ion-item{
+        display: block;
+    }
+
+    #logo {
+                margin: 0 0 ;
+                //padding: 0;
+                justify-content: center;
+                color: #f00;
+                text-align: center;
+                display: block;
+            }
+            p {
+                font-size: 16px;
+                font-weight: bold;
+                letter-spacing: .1px;
+                line-height: 1.5;
+               // margin-bottom: 25px;
+                text-align: center;
+              }
+
+            .box {
+                //position: absolute;
+                //top: 50%;
+                //left: 50%;
+                //transform: translate(-50%, -50%);
+                //width: 25rem;
+                //padding: 2.5rem;
+                margin-top: $picker-wp-toolbar-height;
+                box-sizing: border-box;
+                //border: 1px solid #dadce0;
+                -webkit-border-radius: 8px;
+                border-radius: 8px;
+            
+        }
+
+        button[type="submit"] {
+                border: none;
+                outline: none;
+                color: #fff;
+                //background-color: #1a73e8;
+                padding: 0.625rem 1.25rem;
+                //cursor: pointer;
+                border-radius: 0.312rem;
+                font-size: 1rem;
+                float: right;
+              }
+
 }

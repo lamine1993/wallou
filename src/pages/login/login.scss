@@ -1,3 +1,25 @@
 page-login {
-
+    ion-header {
+    height: 0px;
+    .toolbar {
+        //position: absolute;
+        ion-icon{
+          text-transform: none;
+          font-size: 0.2em; 
+        }
+        .toolbar-background {
+        background: transparent;
+        }
+        .toolbar-title {
+         color: #000;
+         text-transform: none;
+         font-size: 0.2em;
+        }
+    }
+}
+   .BackgroundAppLogin{
+        background-image: url('../../assets/imgs/Login.png');
+        background-repeat: no-repeat;
+        background-size:cover;
+    }
 }

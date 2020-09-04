@@ -1,8 +1,27 @@
 page-home {
+ion-header {
+  .statusbar {
+      background: transparent;
+  }
+}
+
+.btns{
+    height: 30vh;
+}
+
+.imgs{
+    height: 30vh;
+}
+
+.infos{
+    height: 40vh;
+}
+
    ion-slides{
-       padding: 0px 0px 0px 0px;
-       height: 50%;
+       //padding: 0px 0px 0px 0px;
+       height: 30vh;
        p{
+           text-transform: none;
            font-size: 12px;
            text-align: left;
        };
@@ -17,9 +36,9 @@ $slides-pagination-bullet-color-active: color($colors, appCouleur);
   background: $slides-pagination-bullet-color-active;
 }
 
-ion-img{
-    height: 200px;
-    width: 90%;
+img{
+    height: 30vh;
+    width: 95%;
 }
 
 

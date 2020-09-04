@@ -20,7 +20,8 @@ export class MyApp {
   rootPage: any ;
  // rootPage: any = UrgencePage;
   currentUser: any=null;
-  pages: Array<{title: string, component: any}>;
+  isLogin:boolean=false
+  pages: Array<{title: string, icon:string, component: any}>;
   constructor(public events: Events ,
               public platform: Platform, 
               public statusBar: StatusBar, 
@@ -28,27 +29,29 @@ export class MyApp {
               public ts: TestService, 
               public localStockage:Sql, 
               public db :DatabaseService) {
+
     this.initializeApp();
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Acceuil', component: HomePage},
-      {title: 'Connexion', component: LoginPage},
-      {title: 'Inscription', component: RegisterPage}
+    //  { title: 'Urgence', component: UrgencePage},
+      { title: 'Acceuil', icon:'home', component: HomePage},
+      {title: 'Connexion',icon:'log-in', component: LoginPage},
+      {title: 'Inscription',icon:'log-in', component: RegisterPage}
     ];
 
     events.subscribe('user:logged', ()=>{
       this.pages=[
-        { title: 'Urgence', component: UrgencePage},
-        {title: 'Deconnexion', component: LoggoutPage},
+        { title: 'Acceuil',icon:'home', component: UrgencePage},
+        {title: 'Deconnexion',icon:'log-out', component: LoggoutPage},
       ]
     });
 
     events.subscribe('user:loggedout', ()=>{
       this.pages = [
-        { title: 'Acceuil', component: HomePage},
-        {title: 'Connexion', component: LoginPage},
-        {title: 'Inscription', component: RegisterPage}
+        { title: 'Acceuil',icon:'home', component: HomePage},
+        {title: 'Connexion',icon:'log-in', component: LoginPage},
+        {title: 'Inscription',icon:'log-in', component: RegisterPage}
       ];
     });
 
@@ -61,6 +64,7 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      //this.events.publish('user:logged')
       if(this.platform.is('android')){
           this.localStockage.getJson('token')
           .then((data)=>{
@@ -68,8 +72,10 @@ export class MyApp {
             this.events.publish('user:logged')
             this.rootPage =UrgencePage ;
           }).catch(()=>{
-            this.events.publish('user:loggedout')
+            //this.events.publish('user:loggedout')
+            this.events.publish('user:logged')
             this.rootPage = HomePage;
+            //this.rootPage =UrgencePage ;
           })
       }else 
       {
@@ -80,9 +86,9 @@ export class MyApp {
         }else{
           this.events.publish('user:loggedout')
           this.rootPage = HomePage;
+          //this.rootPage =UrgencePage ;
         }
       }
-
     });
   }
 
@@ -92,4 +98,13 @@ export class MyApp {
     this.nav.setRoot(page.component);
   }
 
+ profileName(){
+   /* if (this.userStorage = JSON.parse(localStorage.getItem('userStorage'))) {
+        this.showMe = true;
+        this.showButton = true;
+    }
+    else{
+        this.showMe = false;
+    }*/
+ }
 }

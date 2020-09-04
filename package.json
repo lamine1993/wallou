@@ -27,14 +27,15 @@
     "@ionic-native/http": "^5.25.0",
     "@ionic-native/splash-screen": "4.20.0",
     "@ionic-native/sqlite": "^4.20.0",
-    "@ionic-native/status-bar": "4.20.0",
+    "@ionic-native/status-bar": "^4.20.0",
     "@ionic-native/toast": "^4.20.0",
     "@ionic/pro": "2.0.4",
     "@ionic/storage": "2.2.0",
-    "cordova-android": "7.1.4",
+    "cordova-android": "^8.1.0",
     "cordova-plugin-advanced-http": "2.4.1",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-file": "^6.0.2",
+    "cordova-plugin-geolocation": "4.0.2",
     "cordova-plugin-ionic-keyboard": "^2.2.0",
     "cordova-plugin-ionic-webview": "^4.2.1",
     "cordova-plugin-splashscreen": "^5.0.2",
@@ -72,8 +73,6 @@
       },
       "cordova-plugin-x-toast": {}
     },
-    "platforms": [
-      "android"
-    ]
+    "platforms": []
   }
 }

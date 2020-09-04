@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, MenuController, ToastController  } from 'ionic-angular';
+import { Component, Renderer  } from '@angular/core';
+import { IonicPage, NavController,AlertController , NavParams, MenuController, ToastController, ModalController, ViewController  } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Toast } from '@ionic-native/toast';
 import { Sql, UsagerServiceProvider } from '../../providers';
@@ -23,9 +23,18 @@ export class UrgencePage {
               public navParams: NavParams, 
               public geolocation: Geolocation,
               public service_usager: UsagerServiceProvider,
-              public toastCtrl: ToastController) {
+              public toastCtrl: ToastController,
+              public modalCtrl: ModalController,
+              private alertCtrl: AlertController) {
      //this.menuCtrl.enable(true, 'myMenu');
   }
+
+  openModal() {
+   const myModal=this.modalCtrl.create('ModalConfirmPage',{}, {cssClass:'small-modal', enableBackdropDismiss:true})
+
+   myModal.present()
+}
+
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad UrgencePage');
@@ -46,6 +55,7 @@ export class UrgencePage {
 }
   
   getLocation(){
+        this.openModal()
          let self=this;   
         self.geolocation.getCurrentPosition({timeout: 20000 }).then((resp) => {
             console.log(resp.coords.latitude)
